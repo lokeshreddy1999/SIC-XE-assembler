@@ -1,0 +1,84 @@
+symtableview_____________________________________________________________________________________________________
+NAME							adresss
+BASE							6
+BUFFER							36
+CLOOP							6
+ENDFIL							1A
+EOF							2D
+EXIT							1056
+FIRST							0
+INPUT							105C
+LENGTH							33
+OUTPUT							1076
+RDREC							1036
+RETADR							30
+RLOOP							1040
+WLOOP							1062
+WRREC							105D
+
+
+
+
+
+litableview_____________________________________________________________________________________________________
+NAME							adresss
+
+
+
+
+
+Line	Loc   Block		Source Statement		Object Code
+----------------------------------------------------------------
+
+5		0000  0		COPY		START		0
+10		0000  0		FIRST		STL		RETADR		17202D
+15		0003  0				LDB		#LENGTH			69202D
+20		0006  0		BASE		LENGTH				69202D
+25		0006  0		CLOOP		+JSUB		RDREC		4B101036
+30		000A  0				LDA		LENGTH		032026
+35		000D  0				COMP		#0			290000
+40		0010  0				JEQ		ENDFIL		332007
+45		0013  0				+JSUB		WRREC		4B10105D
+50		0017  0				J		CLOOP		3F2FEC
+55		001A  0		ENDFIL		LDA		EOF		032010
+60		001D  0				STA		BUFFER		0F2016
+65		0020  0				LDA		#3			010003
+70		0023  0				STA		LENGTH		0F200D
+75		0026  0				+JSUB		WRREC		4B10105D
+80		002A  0				J		@RETADR			3E2003
+85		002D  0		EOF	BYTE		C'EOF'			454F46
+90		0030  0		RETADR	RESW		1
+95		0033  0		LENGTH	RESW		1
+100		0036  0		BUFFER	RESB		4096
+105			 .
+110			 . READ RECORD INTO BUFFER
+115			 .
+120		1036  0		RDREC		CLEAR		X		B410
+125		1038  0				CLEAR		A		B400
+130		103A  0				CLEAR		S		B440
+135		103C  0				+LDT		#4096			75001000
+140		1040  0		RLOOP		TD		INPUT		E32019
+145		1043  0				JEQ		RLOOP		332FFA
+150		1046  0				RD		INPUT		DB2013
+155		1049  0				COMPR		A,S		A004
+160		104B  0				JEQ		EXIT		332008
+165		104E  0				STCH		BUFFER,X		57C003
+170		1051  0				TIXR		T		B850
+175		1053  0				JLT		RLOOP		3B2FEA
+180		1056  0		EXIT		STX		LENGTH		134000
+185		1059  0				RSUB				4F0000
+190		105C  0		INPUT	BYTE		X'F1'			F1
+195			 .
+200			 . WRITE RECORD FROM BUFFER
+205			 .
+210		105D  0		WRREC		CLEAR		X		B410
+215		105F  0				LDT		LENGTH		774000
+220		1062  0		WLOOP		TD		OUTPUT		E32011
+225		1065  0				JEQ		WLOOP		332FFA
+230		1068  0				LDCH		BUFFER,X		53C003
+235		106B  0				WD		OUTPUT		DF2008
+240		106E  0				TIXR		T		B850
+245		1070  0				JLT		WLOOP		3B2FEF
+250		1073  0				RSUB				4F0000
+255		1076  0		OUTPUT	BYTE		X'05'			05
+260						END		FIRST
